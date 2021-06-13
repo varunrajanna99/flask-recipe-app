@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="Description" content="A website for finding recipes" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+      body {
+        margin: 2% 2%;
+        background-color: #898787;
+        font-family: "Roboto", sans-serif;
+      }
+
+      .recipe-img {
+        padding-bottom: 15px;
+      }
+
+      .recipes {
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        background-color: #eae8e8;
+        border: 2px solid rgb(97, 93, 93);
+      }
+
+      .main-hdr {
+        padding-bottom: 15px;
+        font-size: 3.5rem;
+      }
+
+      .content-col {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .recipe-title{
+        font-size: 2.5rem;
+      }
+
+      #search-btn{
+          border: 2px solid black;
+          color: white;
+          background-color: rgb(77, 77, 201);
+          transition: transform 2ms ease-in-out;
+      }
+
+      #search-btn:hover{
+          transform: translateY(-1px);
+      }
+
+      #search-btn:active{
+          transform: translateY(1px);
+      }
+
+      li, .ing{
+          list-style-type: none;
+          font-weight: 500;
+      }
+
+      li:before{
+        content: '\1F60B'; 
+        margin-right: 10px; 
+      }
+
+      .ing:before{
+          content: '\26A1';
+          margin-right: 10px;
+      }
+
+      a{
+          color: tomato;
+          font-size: 20px;
+          font-weight: 500;
+          text-decoration: none;
+          transition: 3ms ease-in-out;
+      }
+
+      a:hover{
+          cursor: pointer;
+          text-decoration: underline;
+      }
+
+    </style>
+    <title>Recipes</title>
+  </head>
+  <body>
+    <h1 class="main-hdr">Recipes</h1>
+    <input type="text" id="queryRecipe" placeholder="Type Biryani" style="margin-bottom: 15px;display: inline-block;">
+    <button id="search-btn">Search</button>
+    <!-- <p>{{ data.hits }}</p> -->
+    {% for data in data.hits %}
+    <div class="recipes">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-3">
+            <img
+              src={{ data.recipe.image }}
+              alt=""
+              style="width: 100%;"
+            />
+        </div>
+        <div class="col-12 col-sm-6 col-md-9 content-col">
+          <div class="row">
+            <div class="col-12">
+              <h3 class="recipe-title" style="padding-top: 10px;">{{ data.recipe.label }}</h3>
+              <h4 class="ing-title">Ingredients</h4>
+              <ul>
+              <li class="ing">{{ data.recipe.ingredientLines|join(", ") }}</li>
+              </ul>
+              <h4>Recipe URL</h4>
+              <li><a href={{ data.recipe.url }}>{{ data.recipe.source }}</a></li>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <script>
+        const url = window.location.href
+        document.getElementById("search-btn").onclick = (e) => {
+
+            e.preventDefault();
+
+            const recipe = document.getElementById("queryRecipe");
+            const url_ = url.split("/")[0] + "//" + url.split("/")[2] + "?q=" + recipe.value;
+            location.href =  url_;
+
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
